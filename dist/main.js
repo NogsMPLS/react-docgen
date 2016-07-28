@@ -1,24 +1,9 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- *
- */
-
 'use strict';
 
-var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.utils = exports.resolver = exports.handlers = exports.defaultHandlers = exports.parse = undefined;
 
 var _handlers = require('./handlers');
 
@@ -36,8 +21,24 @@ var _utils = require('./utils');
 
 var utils = _interopRequireWildcard(_utils);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/*
+ * Copyright (c) 2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ *
+ */
+
 var defaultResolver = resolver.findExportedComponentDefinition;
-var defaultHandlers = [handlers.propTypeHandler, handlers.propTypeCompositionHandler, handlers.propDocBlockHandler, handlers.flowTypeHandler, handlers.flowTypeDocBlockHandler, handlers.defaultPropsHandler, handlers.componentDocblockHandler, handlers.displayNameHandler];
+var defaultHandlers = [handlers.propTypeHandler, handlers.propTypeCompositionHandler, handlers.propDocBlockHandler, handlers.flowTypeHandler, handlers.flowTypeDocBlockHandler, handlers.defaultPropsHandler, handlers.componentDocblockHandler, handlers.displayNameHandler, handlers.componentMethodsHandler, handlers.componentMethodsJsDocHandler];
 
 /**
  * See `lib/parse.js` for more information about the arguments. This function
@@ -62,7 +63,7 @@ handlers // eslint-disable-line no-shadow
     handlers = defaultHandlers;
   }
 
-  return (0, _parse2['default'])(src, resolver, handlers);
+  return (0, _parse2.default)(src, resolver, handlers);
 }
 
 exports.parse = defaultParse;

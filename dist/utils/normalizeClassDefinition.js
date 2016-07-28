@@ -1,38 +1,40 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
-
 'use strict';
 
-var _slicedToArray = require('babel-runtime/helpers/sliced-to-array')['default'];
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = normalizeClassDefinition;
 
-var _utilsGetMemberExpressionRoot = require('../utils/getMemberExpressionRoot');
+var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
 
-var _utilsGetMemberExpressionRoot2 = _interopRequireDefault(_utilsGetMemberExpressionRoot);
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
-var _utilsGetMembers = require('../utils/getMembers');
+exports.default = normalizeClassDefinition;
 
-var _utilsGetMembers2 = _interopRequireDefault(_utilsGetMembers);
+var _getMemberExpressionRoot = require('../utils/getMemberExpressionRoot');
+
+var _getMemberExpressionRoot2 = _interopRequireDefault(_getMemberExpressionRoot);
+
+var _getMembers3 = require('../utils/getMembers');
+
+var _getMembers4 = _interopRequireDefault(_getMembers3);
 
 var _recast = require('recast');
 
 var _recast2 = _interopRequireDefault(_recast);
 
-var _recast$types = _recast2['default'].types;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _recast$types = _recast2.default.types; /*
+                                             * Copyright (c) 2015, Facebook, Inc.
+                                             * All rights reserved.
+                                             *
+                                             * This source code is licensed under the BSD-style license found in the
+                                             * LICENSE file in the root directory of this source tree. An additional grant
+                                             * of patent rights can be found in the PATENTS file in the same directory.
+                                             *
+                                             * 
+                                             */
+
 var types = _recast$types.namedTypes;
 var builders = _recast$types.builders;
 
@@ -59,7 +61,6 @@ var ignore = function ignore() {
  *   static propTypes = { ... };
  * }
  */
-
 function normalizeClassDefinition(classDefinition) {
   var variableName;
   if (types.ClassDeclaration.check(classDefinition.node)) {
@@ -84,7 +85,7 @@ function normalizeClassDefinition(classDefinition) {
   }
 
   var scopeRoot = classDefinition.scope;
-  _recast2['default'].visit(scopeRoot.node, {
+  _recast2.default.visit(scopeRoot.node, {
     visitFunction: ignore,
     visitClassDeclaration: ignore,
     visitClassExpression: ignore,
@@ -92,11 +93,11 @@ function normalizeClassDefinition(classDefinition) {
     visitForStatement: ignore,
     visitAssignmentExpression: function visitAssignmentExpression(path) {
       if (types.MemberExpression.check(path.node.left)) {
-        var first = (0, _utilsGetMemberExpressionRoot2['default'])(path.get('left'));
+        var first = (0, _getMemberExpressionRoot2.default)(path.get('left'));
         if (types.Identifier.check(first.node) && first.node.name === variableName) {
-          var _getMembers = (0, _utilsGetMembers2['default'])(path.get('left'));
+          var _getMembers = (0, _getMembers4.default)(path.get('left'));
 
-          var _getMembers2 = _slicedToArray(_getMembers, 1);
+          var _getMembers2 = (0, _slicedToArray3.default)(_getMembers, 1);
 
           var member = _getMembers2[0];
 
@@ -113,5 +114,3 @@ function normalizeClassDefinition(classDefinition) {
     }
   });
 }
-
-module.exports = exports['default'];

@@ -1,23 +1,10 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- *
- */
-
 'use strict';
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = parse;
+exports.ERROR_MISSING_DEFINITION = undefined;
+exports.default = parse;
 
 var _Documentation = require('./Documentation');
 
@@ -31,11 +18,23 @@ var _recast = require('recast');
 
 var _recast2 = _interopRequireDefault(_recast);
 
-var ERROR_MISSING_DEFINITION = 'No suitable component definition found.';
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ERROR_MISSING_DEFINITION = 'No suitable component definition found.'; /*
+                                                                           * Copyright (c) 2015, Facebook, Inc.
+                                                                           * All rights reserved.
+                                                                           *
+                                                                           * This source code is licensed under the BSD-style license found in the
+                                                                           * LICENSE file in the root directory of this source tree. An additional grant
+                                                                           * of patent rights can be found in the PATENTS file in the same directory.
+                                                                           *
+                                                                           * 
+                                                                           *
+                                                                           */
 
 function executeHandlers(handlers, componentDefinitions) {
   return componentDefinitions.map(function (componentDefinition) {
-    var documentation = new _Documentation2['default']();
+    var documentation = new _Documentation2.default();
     handlers.forEach(function (handler) {
       return handler(documentation, componentDefinition);
     });
@@ -63,10 +62,9 @@ function executeHandlers(handlers, componentDefinitions) {
  * an array of documentation objects. If `resolver` returns a single node
  * instead, `parse` will return a documentation object.
  */
-
 function parse(src, resolver, handlers) {
-  var ast = _recast2['default'].parse(src, { esprima: _babylon2['default'] });
-  var componentDefinitions = resolver(ast.program, _recast2['default']);
+  var ast = _recast2.default.parse(src, { esprima: _babylon2.default });
+  var componentDefinitions = resolver(ast.program, _recast2.default);
 
   if (Array.isArray(componentDefinitions)) {
     if (componentDefinitions.length === 0) {

@@ -1,23 +1,9 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- *
- */
-
 'use strict';
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = isReactCreateClassCall;
+exports.default = isReactCreateClassCall;
 
 var _isReactModuleName = require('./isReactModuleName');
 
@@ -35,7 +21,21 @@ var _resolveToModule = require('./resolveToModule');
 
 var _resolveToModule2 = _interopRequireDefault(_resolveToModule);
 
-var types = _recast2['default'].types.namedTypes;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ * Copyright (c) 2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ *
+ */
+
+var types = _recast2.default.types.namedTypes;
 
 /**
  * Returns true if the expression is a function call of the form
@@ -47,11 +47,9 @@ function isReactCreateClassCall(path) {
     path = path.get('expression');
   }
 
-  if (!(0, _match2['default'])(path.node, { callee: { property: { name: 'createClass' } } })) {
+  if (!(0, _match2.default)(path.node, { callee: { property: { name: 'createClass' } } })) {
     return false;
   }
-  var module = (0, _resolveToModule2['default'])(path.get('callee', 'object'));
-  return Boolean(module && (0, _isReactModuleName2['default'])(module));
+  var module = (0, _resolveToModule2.default)(path.get('callee', 'object'));
+  return Boolean(module && (0, _isReactModuleName2.default)(module));
 }
-
-module.exports = exports['default'];

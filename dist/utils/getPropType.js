@@ -1,27 +1,11 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- *
- */
-
-/*eslint no-use-before-define: 0*/
-
 'use strict';
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = getPropType;
+exports.default = getPropType;
 
-var _utilsDocblock = require('../utils/docblock');
+var _docblock = require('../utils/docblock');
 
 var _getMembers = require('./getMembers');
 
@@ -31,9 +15,9 @@ var _getPropertyName = require('./getPropertyName');
 
 var _getPropertyName2 = _interopRequireDefault(_getPropertyName);
 
-var _utilsIsRequiredPropType = require('../utils/isRequiredPropType');
+var _isRequiredPropType = require('../utils/isRequiredPropType');
 
-var _utilsIsRequiredPropType2 = _interopRequireDefault(_utilsIsRequiredPropType);
+var _isRequiredPropType2 = _interopRequireDefault(_isRequiredPropType);
 
 var _printValue = require('./printValue');
 
@@ -47,12 +31,26 @@ var _resolveToValue = require('./resolveToValue');
 
 var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
 
-var types = _recast2['default'].types.namedTypes;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var types = _recast2.default.types.namedTypes; /*
+                                                * Copyright (c) 2015, Facebook, Inc.
+                                                * All rights reserved.
+                                                *
+                                                * This source code is licensed under the BSD-style license found in the
+                                                * LICENSE file in the root directory of this source tree. An additional grant
+                                                * of patent rights can be found in the PATENTS file in the same directory.
+                                                *
+                                                * 
+                                                *
+                                                */
+
+/*eslint no-use-before-define: 0*/
 
 function getEnumValues(path) {
   return path.get('elements').map(function (elementPath) {
     return {
-      value: (0, _printValue2['default'])(elementPath),
+      value: (0, _printValue2.default)(elementPath),
       computed: !types.Literal.check(elementPath.node)
     };
   });
@@ -62,7 +60,7 @@ function getPropTypeOneOf(argumentPath) {
   var type = { name: 'enum' };
   if (!types.ArrayExpression.check(argumentPath.node)) {
     type.computed = true;
-    type.value = (0, _printValue2['default'])(argumentPath);
+    type.value = (0, _printValue2.default)(argumentPath);
   } else {
     type.value = getEnumValues(argumentPath);
   }
@@ -73,7 +71,7 @@ function getPropTypeOneOfType(argumentPath) {
   var type = { name: 'union' };
   if (!types.ArrayExpression.check(argumentPath.node)) {
     type.computed = true;
-    type.value = (0, _printValue2['default'])(argumentPath);
+    type.value = (0, _printValue2.default)(argumentPath);
   } else {
     type.value = argumentPath.get('elements').map(getPropType);
   }
@@ -85,7 +83,7 @@ function getPropTypeArrayOf(argumentPath) {
   var subType = getPropType(argumentPath);
 
   if (subType.name === 'unknown') {
-    type.value = (0, _printValue2['default'])(argumentPath);
+    type.value = (0, _printValue2.default)(argumentPath);
     type.computed = true;
   } else {
     type.value = subType;
@@ -94,21 +92,21 @@ function getPropTypeArrayOf(argumentPath) {
 }
 
 function getPropTypeShape(argumentPath) {
-  var type = { name: 'shape', value: 'unkown' };
+  var type = { name: 'shape', value: 'unknown' };
   if (!types.ObjectExpression.check(argumentPath.node)) {
-    argumentPath = (0, _resolveToValue2['default'])(argumentPath);
+    argumentPath = (0, _resolveToValue2.default)(argumentPath);
   }
 
   if (types.ObjectExpression.check(argumentPath.node)) {
     var value = {};
     argumentPath.get('properties').each(function (propertyPath) {
       var descriptor = getPropType(propertyPath.get('value'));
-      var docs = (0, _utilsDocblock.getDocblock)(propertyPath);
+      var docs = (0, _docblock.getDocblock)(propertyPath);
       if (docs) {
         descriptor.description = docs;
       }
-      descriptor.required = (0, _utilsIsRequiredPropType2['default'])(propertyPath.get('value'));
-      value[(0, _getPropertyName2['default'])(propertyPath)] = descriptor;
+      descriptor.required = (0, _isRequiredPropType2.default)(propertyPath.get('value'));
+      value[(0, _getPropertyName2.default)(propertyPath)] = descriptor;
     });
     type.value = value;
   }
@@ -119,7 +117,7 @@ function getPropTypeShape(argumentPath) {
 function getPropTypeInstanceOf(argumentPath) {
   return {
     name: 'instanceOf',
-    value: (0, _printValue2['default'])(argumentPath)
+    value: (0, _printValue2.default)(argumentPath)
   };
 }
 
@@ -151,10 +149,9 @@ var propTypes = {
  *
  * If there is no match, "custom" is returned.
  */
-
 function getPropType(path) {
   var descriptor;
-  (0, _getMembers2['default'])(path, true).some(function (member) {
+  (0, _getMembers2.default)(path, true).some(function (member) {
     var node = member.path.node;
     var name;
     if (types.Literal.check(node)) {
@@ -179,10 +176,8 @@ function getPropType(path) {
     } else if (types.CallExpression.check(node) && types.Identifier.check(node.callee) && propTypes.hasOwnProperty(node.callee.name)) {
       descriptor = propTypes[node.callee.name](path.get('arguments', 0));
     } else {
-      descriptor = { name: 'custom', raw: (0, _printValue2['default'])(path) };
+      descriptor = { name: 'custom', raw: (0, _printValue2.default)(path) };
     }
   }
   return descriptor;
 }
-
-module.exports = exports['default'];

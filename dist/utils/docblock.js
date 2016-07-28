@@ -1,3 +1,18 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _create = require('babel-runtime/core-js/object/create');
+
+var _create2 = _interopRequireDefault(_create);
+
+exports.getDocblock = getDocblock;
+exports.getDoclets = getDoclets;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -13,15 +28,6 @@
  * Helper functions to work with docblock comments.
  */
 
-'use strict';
-
-var _Object$create = require('babel-runtime/core-js/object/create')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports.getDocblock = getDocblock;
-exports.getDoclets = getDoclets;
 var DOCLET_PATTERN = /^@(\w+)(?:$|\s((?:[^](?!^@\w))*))/gmi;
 
 function parseDocblock(str) {
@@ -38,7 +44,6 @@ var DOCBLOCK_HEADER = /^\*\s/;
  * Given a path, this function returns the closest preceding docblock if it
  * exists.
  */
-
 function getDocblock(path) {
   var comments = [];
   if (path.node.leadingComments) {
@@ -61,9 +66,8 @@ function getDocblock(path) {
  * Given a string, this functions returns an object with doclet names as keys
  * and their "content" as values.
  */
-
 function getDoclets(str) {
-  var doclets = _Object$create(null);
+  var doclets = (0, _create2.default)(null);
   var match = DOCLET_PATTERN.exec(str);
 
   for (; match; match = DOCLET_PATTERN.exec(str)) {

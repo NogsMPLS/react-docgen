@@ -1,3 +1,16 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = getMembers;
+
+var _recast = require('recast');
+
+var _recast2 = _interopRequireDefault(_recast);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -16,20 +29,7 @@
  * Helper methods for dealing with MemberExpressions (and CallExpressions).
  */
 
-'use strict';
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = getMembers;
-
-var _recast = require('recast');
-
-var _recast2 = _interopRequireDefault(_recast);
-
-var types = _recast2['default'].types.namedTypes;
+var types = _recast2.default.types.namedTypes;
 
 /**
  * Given a "nested" Member/CallExpression, e.g.
@@ -78,6 +78,3 @@ function getMembers(path) {
   }
   return result.reverse();
 }
-
-module.exports = exports['default'];
-// eslint-disable-line no-undef

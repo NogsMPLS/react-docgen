@@ -1,3 +1,17 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+exports.default = match;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -15,13 +29,6 @@
  * is simply a (nested) object literal and it is traversed to see whether node
  * contains those (nested) properties with the provided values.
  */
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = match;
-
 function match(node, pattern) {
   if (!node) {
     return false;
@@ -30,7 +37,7 @@ function match(node, pattern) {
     if (!node[prop]) {
       return false;
     }
-    if (pattern[prop] && typeof pattern[prop] === 'object') {
+    if (pattern[prop] && (0, _typeof3.default)(pattern[prop]) === 'object') {
       if (!match(node[prop], pattern[prop])) {
         return false;
       }
@@ -40,5 +47,3 @@ function match(node, pattern) {
   }
   return true;
 }
-
-module.exports = exports['default'];

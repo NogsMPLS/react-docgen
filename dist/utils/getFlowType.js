@@ -1,3 +1,41 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+exports.default = getFlowType;
+
+var _getPropertyName = require('./getPropertyName');
+
+var _getPropertyName2 = _interopRequireDefault(_getPropertyName);
+
+var _printValue = require('./printValue');
+
+var _printValue2 = _interopRequireDefault(_printValue);
+
+var _recast = require('recast');
+
+var _recast2 = _interopRequireDefault(_recast);
+
+var _getTypeAnnotation = require('../utils/getTypeAnnotation');
+
+var _getTypeAnnotation2 = _interopRequireDefault(_getTypeAnnotation);
+
+var _resolveToValue = require('../utils/resolveToValue');
+
+var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
+
+var _isUnreachableFlowType = require('../utils/isUnreachableFlowType');
+
+var _isUnreachableFlowType2 = _interopRequireDefault(_isUnreachableFlowType);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -12,42 +50,8 @@
 
 /* eslint no-use-before-define: 0 */
 
-'use strict';
+var types = _recast2.default.types.namedTypes;
 
-var _extends = require('babel-runtime/helpers/extends')['default'];
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = getFlowType;
-
-var _getPropertyName = require('./getPropertyName');
-
-var _getPropertyName2 = _interopRequireDefault(_getPropertyName);
-
-var _printValue = require('./printValue');
-
-var _printValue2 = _interopRequireDefault(_printValue);
-
-var _recast = require('recast');
-
-var _recast2 = _interopRequireDefault(_recast);
-
-var _utilsGetTypeAnnotation = require('../utils/getTypeAnnotation');
-
-var _utilsGetTypeAnnotation2 = _interopRequireDefault(_utilsGetTypeAnnotation);
-
-var _utilsResolveToValue = require('../utils/resolveToValue');
-
-var _utilsResolveToValue2 = _interopRequireDefault(_utilsResolveToValue);
-
-var _utilsIsUnreachableFlowType = require('../utils/isUnreachableFlowType');
-
-var _utilsIsUnreachableFlowType2 = _interopRequireDefault(_utilsIsUnreachableFlowType);
-
-var types = _recast2['default'].types.namedTypes;
 
 var flowTypes = {
   AnyTypeAnnotation: 'any',
@@ -88,16 +92,16 @@ function handleGenericTypeAnnotation(path) {
   if (path.node.typeParameters) {
     var params = path.get('typeParameters').get('params');
 
-    type = _extends({}, type, {
+    type = (0, _extends3.default)({}, type, {
       elements: params.map(function (param) {
         return getFlowType(param);
       }),
-      raw: (0, _printValue2['default'])(path)
+      raw: (0, _printValue2.default)(path)
     });
   } else {
-    var resolvedPath = (0, _utilsResolveToValue2['default'])(path.get('id'));
+    var resolvedPath = (0, _resolveToValue2.default)(path.get('id'));
 
-    if (!(0, _utilsIsUnreachableFlowType2['default'])(resolvedPath)) {
+    if (!(0, _isUnreachableFlowType2.default)(resolvedPath)) {
       type = getFlowType(resolvedPath.get('right'));
     }
   }
@@ -109,7 +113,7 @@ function handleObjectTypeAnnotation(path) {
   var type = {
     name: 'signature',
     type: 'object',
-    raw: (0, _printValue2['default'])(path),
+    raw: (0, _printValue2.default)(path),
     signature: { properties: [] }
   };
 
@@ -126,7 +130,7 @@ function handleObjectTypeAnnotation(path) {
 
   path.get('properties').each(function (param) {
     type.signature.properties.push({
-      key: (0, _getPropertyName2['default'])(param),
+      key: (0, _getPropertyName2.default)(param),
       value: getFlowTypeWithRequirements(param.get('value'))
     });
   });
@@ -137,7 +141,7 @@ function handleObjectTypeAnnotation(path) {
 function handleUnionTypeAnnotation(path) {
   return {
     name: 'union',
-    raw: (0, _printValue2['default'])(path),
+    raw: (0, _printValue2.default)(path),
     elements: path.get('types').map(function (subType) {
       return getFlowType(subType);
     })
@@ -147,7 +151,7 @@ function handleUnionTypeAnnotation(path) {
 function handleIntersectionTypeAnnotation(path) {
   return {
     name: 'intersection',
-    raw: (0, _printValue2['default'])(path),
+    raw: (0, _printValue2.default)(path),
     elements: path.get('types').map(function (subType) {
       return getFlowType(subType);
     })
@@ -155,7 +159,7 @@ function handleIntersectionTypeAnnotation(path) {
 }
 
 function handleNullableTypeAnnotation(path) {
-  var typeAnnotation = (0, _utilsGetTypeAnnotation2['default'])(path);
+  var typeAnnotation = (0, _getTypeAnnotation2.default)(path);
 
   if (!typeAnnotation) return null;
 
@@ -169,19 +173,19 @@ function handleFunctionTypeAnnotation(path) {
   var type = {
     name: 'signature',
     type: 'function',
-    raw: (0, _printValue2['default'])(path),
+    raw: (0, _printValue2.default)(path),
     signature: {
       arguments: [],
-      'return': getFlowType(path.get('returnType'))
+      return: getFlowType(path.get('returnType'))
     }
   };
 
   path.get('params').each(function (param) {
-    var typeAnnotation = (0, _utilsGetTypeAnnotation2['default'])(param);
+    var typeAnnotation = (0, _getTypeAnnotation2.default)(param);
     if (!typeAnnotation) return null;
 
     type.signature.arguments.push({
-      name: (0, _getPropertyName2['default'])(param.get('name')),
+      name: (0, _getPropertyName2.default)(param.get('name')),
       type: getFlowType(typeAnnotation)
     });
   });
@@ -190,7 +194,7 @@ function handleFunctionTypeAnnotation(path) {
 }
 
 function handleTupleTypeAnnotation(path) {
-  var type = { name: 'tuple', raw: (0, _printValue2['default'])(path), elements: [] };
+  var type = { name: 'tuple', raw: (0, _printValue2.default)(path), elements: [] };
 
   path.get('types').each(function (param) {
     type.elements.push(getFlowType(param));
@@ -206,10 +210,9 @@ function handleTupleTypeAnnotation(path) {
  *
  * If there is no match, "unknown" is returned.
  */
-
 function getFlowType(path) {
   var node = path.node;
-  var type = undefined;
+  var type = void 0;
 
   if (types.Type.check(node)) {
     if (node.type in flowTypes) {
@@ -227,5 +230,3 @@ function getFlowType(path) {
 
   return type;
 }
-
-module.exports = exports['default'];

@@ -1,3 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 /*
  *  Copyright (c) 2015, Facebook, Inc.
  *  All rights reserved.
@@ -8,11 +13,6 @@
  *
  */
 
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
 var babylon = require('babylon');
 
 var options = {
@@ -35,11 +35,10 @@ var options = {
   plugins: { jsx: true, flow: true }
 };
 
-exports['default'] = {
+exports.default = {
   parse: function parse(src) {
     var file = babylon.parse(src, options);
     file.program.comments = file.comments;
     return file.program;
   }
 };
-module.exports = exports['default'];

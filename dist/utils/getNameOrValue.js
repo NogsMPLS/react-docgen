@@ -1,3 +1,22 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = getNameOrValue;
+
+var _recast = require('recast');
+
+var _recast2 = _interopRequireDefault(_recast);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var types = _recast2.default.types.namedTypes;
+
+/**
+ * If node is an Identifier, it returns its name. If it is a literal, it returns
+ * its value.
+ */
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -8,26 +27,6 @@
  *
  * 
  *
- */
-
-'use strict';
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = getNameOrValue;
-
-var _recast = require('recast');
-
-var _recast2 = _interopRequireDefault(_recast);
-
-var types = _recast2['default'].types.namedTypes;
-
-/**
- * If node is an Identifier, it returns its name. If it is a literal, it returns
- * its value.
  */
 
 function getNameOrValue(path, raw) {
@@ -41,5 +40,3 @@ function getNameOrValue(path, raw) {
       throw new TypeError('Argument must be an Identifier or a Literal');
   }
 }
-
-module.exports = exports['default'];

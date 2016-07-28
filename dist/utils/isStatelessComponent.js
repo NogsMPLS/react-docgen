@@ -1,22 +1,9 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
-
 'use strict';
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = isStatelessComponent;
+exports.default = isStatelessComponent;
 
 var _getPropertyValuePath = require('./getPropertyValuePath');
 
@@ -42,14 +29,28 @@ var _resolveToValue = require('./resolveToValue');
 
 var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
 
-var types = _recast2['default'].types.namedTypes;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ * Copyright (c) 2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ */
+
+var types = _recast2.default.types.namedTypes;
+
 
 var reNonLexicalBlocks = /^If|^Else|^Switch/;
 
 var validPossibleStatelessComponentTypes = ['Property', 'FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression'];
 
 function isJSXElementOrReactCreateElement(path) {
-  return path.node.type === 'JSXElement' || path.node.type === 'CallExpression' && (0, _isReactCreateElementCall2['default'])(path);
+  return path.node.type === 'JSXElement' || path.node.type === 'CallExpression' && (0, _isReactCreateElementCall2.default)(path);
 }
 
 function returnsJSXElementOrReactCreateElementCall(path) {
@@ -78,36 +79,36 @@ function returnsJSXElementOrReactCreateElementCall(path) {
     return block.node === path.get('body').node;
   }
 
-  _recast2['default'].visit(path, {
+  _recast2.default.visit(path, {
     visitReturnStatement: function visitReturnStatement(returnPath) {
-      var resolvedPath = (0, _resolveToValue2['default'])(returnPath.get('argument'));
+      var resolvedPath = (0, _resolveToValue2.default)(returnPath.get('argument'));
       if (isJSXElementOrReactCreateElement(resolvedPath) && isSameBlockScope(returnPath)) {
         visited = true;
         return false;
       }
 
       if (resolvedPath.node.type === 'CallExpression') {
-        var calleeValue = (0, _resolveToValue2['default'])(resolvedPath.get('callee'));
+        var calleeValue = (0, _resolveToValue2.default)(resolvedPath.get('callee'));
 
         if (returnsJSXElementOrReactCreateElementCall(calleeValue)) {
           visited = true;
           return false;
         }
 
-        var resolvedValue = undefined;
+        var resolvedValue = void 0;
 
         var namesToResolve = [calleeValue.get('property')];
 
         if (calleeValue.node.type === 'MemberExpression') {
           if (calleeValue.get('object').node.type === 'Identifier') {
-            resolvedValue = (0, _resolveToValue2['default'])(calleeValue.get('object'));
+            resolvedValue = (0, _resolveToValue2.default)(calleeValue.get('object'));
           } else {
             while (calleeValue.get('object').node.type !== 'Identifier') {
               calleeValue = calleeValue.get('object');
               namesToResolve.unshift(calleeValue.get('property'));
             }
 
-            resolvedValue = (0, _resolveToValue2['default'])(calleeValue.get('object'));
+            resolvedValue = (0, _resolveToValue2.default)(calleeValue.get('object'));
           }
         }
 
@@ -115,9 +116,9 @@ function returnsJSXElementOrReactCreateElementCall(path) {
           var resolvedMemberExpression = namesToResolve.reduce(function (result, path) {
             // eslint-disable-line no-shadow
             if (result) {
-              result = (0, _getPropertyValuePath2['default'])(result, path.node.name);
+              result = (0, _getPropertyValuePath2.default)(result, path.node.name);
               if (result && types.Identifier.check(result.node)) {
-                return (0, _resolveToValue2['default'])(result);
+                return (0, _resolveToValue2.default)(result);
               }
             }
             return result;
@@ -140,7 +141,6 @@ function returnsJSXElementOrReactCreateElementCall(path) {
 /**
  * Returns `true` if the path represents a function which returns a JSXElement
  */
-
 function isStatelessComponent(path) {
   var node = path.node;
 
@@ -149,7 +149,7 @@ function isStatelessComponent(path) {
   }
 
   if (node.type === 'Property') {
-    if ((0, _isReactCreateClassCall2['default'])(path.parent) || (0, _isReactComponentClass2['default'])(path.parent)) {
+    if ((0, _isReactCreateClassCall2.default)(path.parent) || (0, _isReactComponentClass2.default)(path.parent)) {
       return false;
     }
   }
@@ -160,5 +160,3 @@ function isStatelessComponent(path) {
 
   return false;
 }
-
-module.exports = exports['default'];

@@ -1,72 +1,70 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
-
 'use strict';
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = findExportedComponentDefinition;
+exports.default = findExportedComponentDefinition;
 
-var _utilsIsExportsOrModuleAssignment = require('../utils/isExportsOrModuleAssignment');
+var _isExportsOrModuleAssignment = require('../utils/isExportsOrModuleAssignment');
 
-var _utilsIsExportsOrModuleAssignment2 = _interopRequireDefault(_utilsIsExportsOrModuleAssignment);
+var _isExportsOrModuleAssignment2 = _interopRequireDefault(_isExportsOrModuleAssignment);
 
-var _utilsIsReactComponentClass = require('../utils/isReactComponentClass');
+var _isReactComponentClass = require('../utils/isReactComponentClass');
 
-var _utilsIsReactComponentClass2 = _interopRequireDefault(_utilsIsReactComponentClass);
+var _isReactComponentClass2 = _interopRequireDefault(_isReactComponentClass);
 
-var _utilsIsReactCreateClassCall = require('../utils/isReactCreateClassCall');
+var _isReactCreateClassCall = require('../utils/isReactCreateClassCall');
 
-var _utilsIsReactCreateClassCall2 = _interopRequireDefault(_utilsIsReactCreateClassCall);
+var _isReactCreateClassCall2 = _interopRequireDefault(_isReactCreateClassCall);
 
-var _utilsIsStatelessComponent = require('../utils/isStatelessComponent');
+var _isStatelessComponent = require('../utils/isStatelessComponent');
 
-var _utilsIsStatelessComponent2 = _interopRequireDefault(_utilsIsStatelessComponent);
+var _isStatelessComponent2 = _interopRequireDefault(_isStatelessComponent);
 
-var _utilsNormalizeClassDefinition = require('../utils/normalizeClassDefinition');
+var _normalizeClassDefinition = require('../utils/normalizeClassDefinition');
 
-var _utilsNormalizeClassDefinition2 = _interopRequireDefault(_utilsNormalizeClassDefinition);
+var _normalizeClassDefinition2 = _interopRequireDefault(_normalizeClassDefinition);
 
-var _utilsResolveExportDeclaration = require('../utils/resolveExportDeclaration');
+var _resolveExportDeclaration = require('../utils/resolveExportDeclaration');
 
-var _utilsResolveExportDeclaration2 = _interopRequireDefault(_utilsResolveExportDeclaration);
+var _resolveExportDeclaration2 = _interopRequireDefault(_resolveExportDeclaration);
 
-var _utilsResolveToValue = require('../utils/resolveToValue');
+var _resolveToValue = require('../utils/resolveToValue');
 
-var _utilsResolveToValue2 = _interopRequireDefault(_utilsResolveToValue);
+var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
 
-var ERROR_MULTIPLE_DEFINITIONS = 'Multiple exported component definitions found.';
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ERROR_MULTIPLE_DEFINITIONS = 'Multiple exported component definitions found.'; /*
+                                                                                    * Copyright (c) 2015, Facebook, Inc.
+                                                                                    * All rights reserved.
+                                                                                    *
+                                                                                    * This source code is licensed under the BSD-style license found in the
+                                                                                    * LICENSE file in the root directory of this source tree. An additional grant
+                                                                                    * of patent rights can be found in the PATENTS file in the same directory.
+                                                                                    *
+                                                                                    * 
+                                                                                    */
 
 function ignore() {
   return false;
 }
 
 function isComponentDefinition(path) {
-  return (0, _utilsIsReactCreateClassCall2['default'])(path) || (0, _utilsIsReactComponentClass2['default'])(path) || (0, _utilsIsStatelessComponent2['default'])(path);
+  return (0, _isReactCreateClassCall2.default)(path) || (0, _isReactComponentClass2.default)(path) || (0, _isStatelessComponent2.default)(path);
 }
 
 function resolveDefinition(definition, types) {
-  if ((0, _utilsIsReactCreateClassCall2['default'])(definition)) {
+  if ((0, _isReactCreateClassCall2.default)(definition)) {
     // return argument
-    var resolvedPath = (0, _utilsResolveToValue2['default'])(definition.get('arguments', 0));
+    var resolvedPath = (0, _resolveToValue2.default)(definition.get('arguments', 0));
     if (types.ObjectExpression.check(resolvedPath.node)) {
       return resolvedPath;
     }
-  } else if ((0, _utilsIsReactComponentClass2['default'])(definition)) {
-    (0, _utilsNormalizeClassDefinition2['default'])(definition);
+  } else if ((0, _isReactComponentClass2.default)(definition)) {
+    (0, _normalizeClassDefinition2.default)(definition);
     return definition;
-  } else if ((0, _utilsIsStatelessComponent2['default'])(definition)) {
+  } else if ((0, _isStatelessComponent2.default)(definition)) {
     return definition;
   }
   return null;
@@ -87,13 +85,12 @@ function resolveDefinition(definition, types) {
  * export default Definition;
  * export var Definition = ...;
  */
-
 function findExportedComponentDefinition(ast, recast) {
   var types = recast.types.namedTypes;
   var definition;
 
   function exportDeclaration(path) {
-    var definitions = (0, _utilsResolveExportDeclaration2['default'])(path, types).filter(isComponentDefinition);
+    var definitions = (0, _resolveExportDeclaration2.default)(path, types).filter(isComponentDefinition);
 
     if (definitions.length === 0) {
       return false;
@@ -127,12 +124,12 @@ function findExportedComponentDefinition(ast, recast) {
     visitAssignmentExpression: function visitAssignmentExpression(path) {
       // Ignore anything that is not `exports.X = ...;` or
       // `module.exports = ...;`
-      if (!(0, _utilsIsExportsOrModuleAssignment2['default'])(path)) {
+      if (!(0, _isExportsOrModuleAssignment2.default)(path)) {
         return false;
       }
       // Resolve the value of the right hand side. It should resolve to a call
       // expression, something like React.createClass
-      path = (0, _utilsResolveToValue2['default'])(path.get('right'));
+      path = (0, _resolveToValue2.default)(path.get('right'));
       if (!isComponentDefinition(path)) {
         return false;
       }
@@ -147,5 +144,3 @@ function findExportedComponentDefinition(ast, recast) {
 
   return definition;
 }
-
-module.exports = exports['default'];

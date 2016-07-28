@@ -1,18 +1,17 @@
 'use strict';
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = resolveName;
+exports.default = resolveName;
 
 var _recast = require('recast');
 
 var _recast2 = _interopRequireDefault(_recast);
 
-var types = _recast2['default'].types.namedTypes;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var types = _recast2.default.types.namedTypes;
 function resolveName(path) {
   if (types.VariableDeclaration.check(path.node)) {
     var declarations = path.get('declarations');
@@ -37,5 +36,3 @@ function resolveName(path) {
 
   throw new TypeError('Attempted to resolveName for an unsupported path. resolveName accepts a ' + 'VariableDeclaration, FunctionDeclaration, or FunctionExpression. Got "' + path.node.type + '".');
 }
-
-module.exports = exports['default'];

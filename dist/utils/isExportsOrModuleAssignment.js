@@ -1,3 +1,22 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isExportsOrModuleAssignment;
+
+var _expressionTo = require('./expressionTo');
+
+var expressionTo = _interopRequireWildcard(_expressionTo);
+
+var _recast = require('recast');
+
+var _recast2 = _interopRequireDefault(_recast);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -10,26 +29,7 @@
  *
  */
 
-'use strict';
-
-var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = isExportsOrModuleAssignment;
-
-var _expressionTo = require('./expressionTo');
-
-var expressionTo = _interopRequireWildcard(_expressionTo);
-
-var _recast = require('recast');
-
-var _recast2 = _interopRequireDefault(_recast);
-
-var types = _recast2['default'].types.namedTypes;
+var types = _recast2.default.types.namedTypes;
 
 /**
  * Returns true if the expression is of form `exports.foo = ...;` or
@@ -47,5 +47,3 @@ function isExportsOrModuleAssignment(path) {
   var exprArr = expressionTo.Array(path.get('left'));
   return exprArr[0] === 'module' && exprArr[1] === 'exports' || exprArr[0] === 'exports';
 }
-
-module.exports = exports['default'];

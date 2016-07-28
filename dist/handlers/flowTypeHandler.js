@@ -1,3 +1,24 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = flowTypeHandler;
+
+var _getFlowType = require('../utils/getFlowType');
+
+var _getFlowType2 = _interopRequireDefault(_getFlowType);
+
+var _getPropertyName = require('../utils/getPropertyName');
+
+var _getPropertyName2 = _interopRequireDefault(_getPropertyName);
+
+var _getFlowTypeFromReactComponent = require('../utils/getFlowTypeFromReactComponent');
+
+var _getFlowTypeFromReactComponent2 = _interopRequireDefault(_getFlowTypeFromReactComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -10,50 +31,39 @@
  *
  */
 
-'use strict';
+function setPropDescriptor(documentation, path) {
+  var propDescriptor = documentation.getPropDescriptor((0, _getPropertyName2.default)(path));
+  var type = (0, _getFlowType2.default)(path.get('value'));
 
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
+  if (type) {
+    propDescriptor.flowType = type;
+    propDescriptor.required = !path.node.optional;
+  }
+}
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = flowTypeHandler;
-
-var _utilsGetFlowType = require('../utils/getFlowType');
-
-var _utilsGetFlowType2 = _interopRequireDefault(_utilsGetFlowType);
-
-var _utilsGetPropertyName = require('../utils/getPropertyName');
-
-var _utilsGetPropertyName2 = _interopRequireDefault(_utilsGetPropertyName);
-
-var _utilsGetFlowTypeFromReactComponent = require('../utils/getFlowTypeFromReactComponent');
-
-var _utilsGetFlowTypeFromReactComponent2 = _interopRequireDefault(_utilsGetFlowTypeFromReactComponent);
+function findAndSetTypes(documentation, path) {
+  if (path.node.properties) {
+    path.get('properties').each(function (propertyPath) {
+      return setPropDescriptor(documentation, propertyPath);
+    });
+  } else if (path.node.types) {
+    path.get('types').each(function (typesPath) {
+      return findAndSetTypes(documentation, typesPath);
+    });
+  }
+}
 
 /**
  * This handler tries to find flow Type annotated react components and extract
  * its types to the documentation. It also extracts docblock comments which are
  * inlined in the type definition.
  */
-
 function flowTypeHandler(documentation, path) {
-  var flowTypesPath = (0, _utilsGetFlowTypeFromReactComponent2['default'])(path);
+  var flowTypesPath = (0, _getFlowTypeFromReactComponent2.default)(path);
 
   if (!flowTypesPath) {
     return;
   }
 
-  flowTypesPath.get('properties').each(function (propertyPath) {
-    var propDescriptor = documentation.getPropDescriptor((0, _utilsGetPropertyName2['default'])(propertyPath));
-    var valuePath = propertyPath.get('value');
-    var type = (0, _utilsGetFlowType2['default'])(valuePath);
-
-    if (type) {
-      propDescriptor.flowType = type;
-      propDescriptor.required = !propertyPath.node.optional;
-    }
-  });
+  findAndSetTypes(documentation, flowTypesPath);
 }
-
-module.exports = exports['default'];

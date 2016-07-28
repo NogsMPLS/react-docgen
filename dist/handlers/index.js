@@ -1,51 +1,97 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- *
- */
-
 'use strict';
 
-var _interopRequire = require('babel-runtime/helpers/interop-require')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _componentDocblockHandler = require('./componentDocblockHandler');
 
-exports.componentDocblockHandler = _interopRequire(_componentDocblockHandler);
+Object.defineProperty(exports, 'componentDocblockHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_componentDocblockHandler).default;
+  }
+});
+
+var _componentMethodsHandler = require('./componentMethodsHandler');
+
+Object.defineProperty(exports, 'componentMethodsHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_componentMethodsHandler).default;
+  }
+});
+
+var _componentMethodsJsDocHandler = require('./componentMethodsJsDocHandler');
+
+Object.defineProperty(exports, 'componentMethodsJsDocHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_componentMethodsJsDocHandler).default;
+  }
+});
 
 var _defaultPropsHandler = require('./defaultPropsHandler');
 
-exports.defaultPropsHandler = _interopRequire(_defaultPropsHandler);
+Object.defineProperty(exports, 'defaultPropsHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_defaultPropsHandler).default;
+  }
+});
 
 var _propTypeHandler = require('./propTypeHandler');
 
-exports.propTypeHandler = _interopRequire(_propTypeHandler);
+Object.defineProperty(exports, 'propTypeHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_propTypeHandler).default;
+  }
+});
 
 var _propTypeCompositionHandler = require('./propTypeCompositionHandler');
 
-exports.propTypeCompositionHandler = _interopRequire(_propTypeCompositionHandler);
+Object.defineProperty(exports, 'propTypeCompositionHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_propTypeCompositionHandler).default;
+  }
+});
 
 var _propDocBlockHandler = require('./propDocBlockHandler');
 
-exports.propDocBlockHandler = _interopRequire(_propDocBlockHandler);
+Object.defineProperty(exports, 'propDocBlockHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_propDocBlockHandler).default;
+  }
+});
 
 var _displayNameHandler = require('./displayNameHandler');
 
-exports.displayNameHandler = _interopRequire(_displayNameHandler);
+Object.defineProperty(exports, 'displayNameHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_displayNameHandler).default;
+  }
+});
 
 var _flowTypeHandler = require('./flowTypeHandler');
 
-exports.flowTypeHandler = _interopRequire(_flowTypeHandler);
+Object.defineProperty(exports, 'flowTypeHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_flowTypeHandler).default;
+  }
+});
 
 var _flowTypeDocBlockHandler = require('./flowTypeDocBlockHandler');
 
-exports.flowTypeDocBlockHandler = _interopRequire(_flowTypeDocBlockHandler);
+Object.defineProperty(exports, 'flowTypeDocBlockHandler', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_flowTypeDocBlockHandler).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

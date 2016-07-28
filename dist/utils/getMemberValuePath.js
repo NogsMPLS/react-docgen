@@ -1,28 +1,26 @@
-/*
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- *
- */
-
 'use strict';
 
-var _defineProperty = require('babel-runtime/helpers/define-property')['default'];
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _LOOKUP_METHOD;
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
-exports['default'] = getMemberValuePath;
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _LOOKUP_METHOD; /*
+                     * Copyright (c) 2015, Facebook, Inc.
+                     * All rights reserved.
+                     *
+                     * This source code is licensed under the BSD-style license found in the
+                     * LICENSE file in the root directory of this source tree. An additional grant
+                     * of patent rights can be found in the PATENTS file in the same directory.
+                     *
+                     * 
+                     *
+                     */
+
+exports.default = getMemberValuePath;
 
 var _getMemberExpressionValuePath = require('./getMemberExpressionValuePath');
 
@@ -40,14 +38,17 @@ var _recast = require('recast');
 
 var _recast2 = _interopRequireDefault(_recast);
 
-var types = _recast2['default'].types.namedTypes;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var types = _recast2.default.types.namedTypes;
+
 
 var SYNONYMS = {
   getDefaultProps: 'defaultProps',
   defaultProps: 'getDefaultProps'
 };
 
-var LOOKUP_METHOD = (_LOOKUP_METHOD = {}, _defineProperty(_LOOKUP_METHOD, types.ArrowFunctionExpression.name, _getMemberExpressionValuePath2['default']), _defineProperty(_LOOKUP_METHOD, types.FunctionExpression.name, _getMemberExpressionValuePath2['default']), _defineProperty(_LOOKUP_METHOD, types.FunctionDeclaration.name, _getMemberExpressionValuePath2['default']), _defineProperty(_LOOKUP_METHOD, types.VariableDeclaration.name, _getMemberExpressionValuePath2['default']), _defineProperty(_LOOKUP_METHOD, types.ObjectExpression.name, _getPropertyValuePath2['default']), _defineProperty(_LOOKUP_METHOD, types.ClassDeclaration.name, _getClassMemberValuePath2['default']), _defineProperty(_LOOKUP_METHOD, types.ClassExpression.name, _getClassMemberValuePath2['default']), _LOOKUP_METHOD);
+var LOOKUP_METHOD = (_LOOKUP_METHOD = {}, (0, _defineProperty3.default)(_LOOKUP_METHOD, types.ArrowFunctionExpression.name, _getMemberExpressionValuePath2.default), (0, _defineProperty3.default)(_LOOKUP_METHOD, types.FunctionExpression.name, _getMemberExpressionValuePath2.default), (0, _defineProperty3.default)(_LOOKUP_METHOD, types.FunctionDeclaration.name, _getMemberExpressionValuePath2.default), (0, _defineProperty3.default)(_LOOKUP_METHOD, types.VariableDeclaration.name, _getMemberExpressionValuePath2.default), (0, _defineProperty3.default)(_LOOKUP_METHOD, types.ObjectExpression.name, _getPropertyValuePath2.default), (0, _defineProperty3.default)(_LOOKUP_METHOD, types.ClassDeclaration.name, _getClassMemberValuePath2.default), (0, _defineProperty3.default)(_LOOKUP_METHOD, types.ClassExpression.name, _getClassMemberValuePath2.default), _LOOKUP_METHOD);
 
 function isSupportedDefinitionType(_ref) {
   var node = _ref.node;
@@ -71,7 +72,6 @@ function isSupportedDefinitionType(_ref) {
  * It also normalizes the names so that e.g. `defaultProps` and
  * `getDefaultProps` can be used interchangeably.
  */
-
 function getMemberValuePath(componentDefinition, memberName) {
   if (!isSupportedDefinitionType(componentDefinition)) {
     throw new TypeError('Got unsupported definition type. Definition must be one of ' + 'ObjectExpression, ClassDeclaration, ClassExpression,' + 'VariableDeclaration, ArrowFunctionExpression, FunctionExpression, or ' + 'FunctionDeclaration. Got "' + componentDefinition.node.type + '"' + 'instead.');
@@ -84,5 +84,3 @@ function getMemberValuePath(componentDefinition, memberName) {
   }
   return result;
 }
-
-module.exports = exports['default'];

@@ -1,3 +1,20 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Array = exports.String = undefined;
+
+var _resolveToValue = require('./resolveToValue');
+
+var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
+
+var _recast = require('recast');
+
+var _recast2 = _interopRequireDefault(_recast);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -12,28 +29,13 @@
 
 /*eslint no-loop-func: 0, no-use-before-define: 0*/
 
-'use strict';
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _resolveToValue = require('./resolveToValue');
-
-var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
-
-var _recast = require('recast');
-
-var _recast2 = _interopRequireDefault(_recast);
-
-var types = _recast2['default'].types.namedTypes;
+var types = _recast2.default.types.namedTypes;
 
 /**
  * Splits a MemberExpression or CallExpression into parts.
  * E.g. foo.bar.baz becomes ['foo', 'bar', 'baz']
  */
+
 function toArray(path) {
   var parts = [path];
   var result = [];
@@ -47,7 +49,7 @@ function toArray(path) {
     } else if (types.MemberExpression.check(node)) {
       parts.push(path.get('object'));
       if (node.computed) {
-        var resolvedPath = (0, _resolveToValue2['default'])(path.get('property'));
+        var resolvedPath = (0, _resolveToValue2.default)(path.get('property'));
         if (resolvedPath !== undefined) {
           result = result.concat(toArray(resolvedPath));
         } else {

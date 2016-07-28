@@ -1,3 +1,9 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isReactModuleName;
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -10,23 +16,14 @@
  *
  */
 
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = isReactModuleName;
 var reactModules = ['react', 'react/addons', 'react-native'];
 
 /**
  * Takes a module name (string) and returns true if it refers to a root react
  * module name.
  */
-
 function isReactModuleName(moduleName) {
   return reactModules.some(function (reactModuleName) {
     return reactModuleName === moduleName.toLowerCase();
   });
 }
-
-module.exports = exports['default'];

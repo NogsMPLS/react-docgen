@@ -1,3 +1,20 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = resolveExportDeclaration;
+
+var _recast = require('recast');
+
+var _recast2 = _interopRequireDefault(_recast);
+
+var _resolveToValue = require('./resolveToValue');
+
+var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -9,31 +26,13 @@
  * 
  */
 
-'use strict';
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = resolveExportDeclaration;
-
-var _recast = require('recast');
-
-var _recast2 = _interopRequireDefault(_recast);
-
-var _resolveToValue = require('./resolveToValue');
-
-var _resolveToValue2 = _interopRequireDefault(_resolveToValue);
-
-var _types = _recast2['default'].types.namedTypes;
-//eslint-disable-line no-unused-vars
+var _types = _recast2.default.types.namedTypes; //eslint-disable-line no-unused-vars
 
 function resolveExportDeclaration(path) {
   var types = arguments.length <= 1 || arguments[1] === undefined ? _types : arguments[1];
 
   var definitions = [];
-  if (path.node['default']) {
+  if (path.node.default) {
     definitions.push(path.get('declaration'));
   } else if (path.node.declaration) {
     if (types.VariableDeclaration.check(path.node.declaration)) {
@@ -49,8 +48,6 @@ function resolveExportDeclaration(path) {
     });
   }
   return definitions.map(function (definition) {
-    return (0, _resolveToValue2['default'])(definition);
+    return (0, _resolveToValue2.default)(definition);
   });
 }
-
-module.exports = exports['default'];
