@@ -195,7 +195,6 @@ describe('displayNameHandler with ES6 Exports', () => {
     displayNameHandler(documentation, definition);
     expect(documentation.displayName).toBe('Foo');
   });
-
 });
 
 describe('displayNameHandler with CommonJS Exports', () => {
